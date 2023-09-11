@@ -1,15 +1,15 @@
-# Canchu - let's be friends
+# Canchu - let's be friends ✌🏻
+💡 Fun Fact: 'Canchu' means 'holding hands' in Taiwanese.
 
-## This project
 #### In the summer of 2023, I completed the backend implementation of a social networking software. It allows users to create profiles, make friends, and post updates. Here are some key features:
 
-* I set up the environment using Docker, ensuring it's not bound by specific computer operating systems.
-* To ensure system stability, I implemented Cache to save resources and implemented IP traffic control.
-* Advanced Load Balancing techniques were implemented to enhance system performance, and K6 was used to monitor system performance and usage.
-* Through GitHub Actions, I practiced CI/CD, accelerating the software development lifecycle while ensuring code quality.
+* I set up the environment using **Docker**, ensuring it's not bound by specific computer operating systems.
+* To ensure system stability, I implemented **Cache** to save resources and implemented **IP traffic control**.
+* Advanced **Load Balancing** techniques were implemented to enhance system performance, and **K6** was used to monitor system performance and usage.
+* Through **GitHub Actions**, I practiced **CI/CD**, accelerating the software development lifecycle while ensuring code quality.
 
-## How to reproduce the project?
-### Recommended to run on AWS (EC2)
+## 🚀 How to reproduce the project?
+**Recommended to run on AWS (EC2)**
 1. Download Canchu from https://github.com/ycccccccccccc/Canchu
 2. Navigate to the backend directory using the command cd backend
 3. Configure the `.env` parameters: `SECRET` for JWT, `DB_password`, and `DB_host` for MySQL.
@@ -17,7 +17,7 @@
 5. Run `docker-compose up --build`.
 6. Congratulations! You can test it using Postman at `https://<ssl-url>/<API>`. For example, `https://13.238.130.147/users/signup`. This is the URL format.
 
-## In this project, I learned and utilized the following skills:
+## 🚀 In this project, I learned and utilized the following skills:
 ### Programming Language
 1. JavaScript
 
