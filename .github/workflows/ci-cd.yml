@@ -1,0 +1,56 @@
+name: canchu workflow
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test_canchu:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Build docker compose for test
+      run: |
+        cd backend
+        echo "${{ secrets.ENV_FILE }}" > .env
+        mkdir private
+        echo "${{ secrets.PRIVATE_KEY }}" > private/private.key
+        echo "${{ secrets.CERTIFICATE_CRT }}" > private/certificate.crt
+        docker-compose --env-file .env up -d
+    - name: Wait for containers to start
+      run: sleep 10
+    - name: Run test file
+      run: |
+        docker ps
+        docker exec server npm test -- --watch=false --force-exit --maxWorkers=1
+
+  deploy_canchu:
+    needs: test_canchu
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to ec2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_KEY }}
+        port: ${{ secrets.EC2_PORT }}
+        script: |
+          pwd
+          ls
+          if [ ! -d "Canchu" ]; then
+            git clone https://github.com/ycccccccccccc/Canchu.git
+          fi
+          cd Canchu/backend
+          ls
+          git pull origin develop
+          if [ ! -d "private" ]; then
+            mkdir private
+          fi
+          echo "${{ secrets.ENV_FILE }}" > .env
+          echo "${{ secrets.PRIVATE_KEY }}" > private/private.key
+          echo "${{ secrets.CERTIFICATE_CRT }}" > private/certificate.crt
+          docker-compose down
+          docker-compose --env-file .env up --build -d
+          docker ps -a
