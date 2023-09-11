@@ -5,7 +5,7 @@ FROM node:16-alpine3.18
 EXPOSE 3000
 
 # 複製 Node.js 應用程式到容器中
-WORKDIR /home/ubuntu/canchu/Backend
+WORKDIR /home/ubuntu/Canchu/backend
 COPY . .
 
 # 安裝 Node.js 應用程式的相依套件
