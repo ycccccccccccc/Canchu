@@ -1,0 +1,61 @@
+version: "3.8"
+services:
+  nginx:
+    image: nginx:alpine3.17
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./private/certificate.crt:/etc/nginx/certificate.crt:ro
+      - ./private/private.key:/etc/nginx/private.key:ro
+    restart: always
+    networks:
+      - my_network
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "$DB_password"
+      MYSQL_HOST: "$DOCKER_DB_host"
+      MYSQL_DATABASE: canchu
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    networks:
+      - my_network
+
+  redis:
+    image: redis:6.0.20-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - my_network
+
+  server:
+    container_name: server
+    image: node:20.5.0-alpine3.18
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - my_network
+    command: sh -c "while ! nc -z mysql 3306; do sleep 1; done && node app.js"
+    depends_on:
+      - mysql
+      - redis
+
+networks:
+  my_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
