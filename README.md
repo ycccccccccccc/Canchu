@@ -1,4 +1,4 @@
-# Canchu - let's be friends ✌🏻
+# Canchu - let's be friends 👩🏻‍🤝‍👩🏼
 💡 Fun Fact: 'Canchu' means 'holding hands' in Taiwanese.
 
 #### In the summer of 2023, I completed the backend implementation of a social networking software. It allows users to create profiles, make friends, and post updates. Here are some key features:
